@@ -13,13 +13,22 @@ using namespace cv;
 using namespace cv::ximgproc::segmentation;
 
 int main (int argc, char** argv){
+	cout << "Hello world!" << endl;
+	
 	// read image
 	Mat image = cv::imread("../data/ship.jpg");
 	// resize image
+	
 	int newHeight = 200;
-	int newWidth = (image.cols*newHeight)/image.rows;
+	
+	cout << "Hello world!" << endl;
+	
+	int newWidth = round((image.cols*newHeight)/image.rows);
+	
 	cout << "New Width: " << newWidth << endl;
+	
 	cv::resize(image, image, Size(newWidth, newHeight));
+	//cv::resize(image, image, Size(image.cols, newHeight));
 
 	// create selective search segmentation object
 	Ptr<SelectiveSearchSegmentation> ss = createSelectiveSearchSegmentation();
@@ -35,12 +44,12 @@ int main (int argc, char** argv){
 	cout << "Possible number of regions: " << rects.size() << endl;
 
 	int numShowRects = 100;
-	int increment = 50;
+	//int increment = 50;
 
 	while(1){
 		Mat imageOut = image.clone();
 
-		for(int i=0; i<rects.size(); i++){
+		for(int i=0; i<(int)rects.size(); i++){
 			if(i < numShowRects)
 				rectangle(imageOut, rects[i], Scalar(0, 255, 0));
 			else
@@ -49,7 +58,7 @@ int main (int argc, char** argv){
 
 		cout << numShowRects << " iterations done." << endl;
 		// show output
-		//imshow("Output", imageOut);
+		imshow("Output", imageOut);
 
 		break;
 	}
