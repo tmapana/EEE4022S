@@ -1,4 +1,24 @@
-README file for project work
+README file for project work: EEE4022S
+Name: Tlotliso Mapana
+University of Cape Town
 
-1. First try is a selective search algorithm to search for object in the picture
 
+Compile steps:
+
+1.	make all:	compile all programs
+
+2.	make run:	execute all programs in the order that they were compiled
+
+3.	make [OPTION]:	[choose an option from these below to execute a program individually]
+
+	(a)	runHough:	execute only the houghtransform program
+	
+	(b)	runMask: 	execute only the maskrcnn program
+
+4.	make clean:	cleanup the project and delete all the compiled object files and the binary executable files
+
+
+The various inputs to the programs can be found in the 'data' folder, inputs may be changed to test for other images.
+
+
+When compiled, the binary executable files will be in the 'bin' folder.

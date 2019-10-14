@@ -1,29 +1,43 @@
-# the compiler: gcc for C program, define as g++ for C++
+# The compiler: gcc for C program, define as g++ for C++
 CC=g++
 
-# compiler flgs
+# Compiler flgs
 CFLAGS=-g -Wall
 
-# source directory
+# Source directory
 SRC=src
 
-# program directory
-EXEC=executables
+# Program directory
+BIN=bin
 
+# Open CV libraries
 OPENCV=`pkg-config opencv --cflags --libs`
 LIBS=$(OPENCV)
 
-#$(EXEC)/selectsearch:	$(SRC)/selectsearch.cpp
-#	$(CC) $(CFLAGS) -o $(EXEC)/selectsearch $(SRC)/selectsearch.cpp $(LIBS)
+all:	$(BIN)/selectsearch	$(BIN)/houghtransform	$(BIN)/maskrcnn
 
-$(EXEC)/houghtransform:	$(SRC)/houghtransform.cpp
-	$(CC) $(CFLAGS) -o $(EXEC)/houghtransform $(SRC)/houghtransform.cpp $(LIBS)
+$(BIN)/selectsearch:	$(SRC)/selectsearch.cpp
+	$(CC) $(CFLAGS) -o $(BIN)/selectsearch $(SRC)/selectsearch.cpp $(LIBS)
 
-#runSS:
-#	./$(EXEC)/selectsearch
+$(BIN)/houghtransform:	$(SRC)/houghtransform.cpp
+	$(CC) $(CFLAGS) -o $(BIN)/houghtransform $(SRC)/houghtransform.cpp $(LIBS)
 
-runTH:
-	./$(EXEC)/houghtransform
+$(BIN)/maskrcnn:        $(SRC)/maskrcnn.cpp
+	$(CC) $(CFLAGS) -o $(BIN)/maskrcnn $(SRC)/maskrcnn.cpp $(LIBS)
+
+run:
+	./$(BIN)/selectsearch
+	./$(BIN)/houghtransform
+	./$(BIN)/maskrcnn
+
+runSearch:
+	./$(BIN)/selectsearch
+
+runHough:
+	./$(BIN)/houghtransform
+
+runMask:
+	./$(BIN)/maskrcnn
 
 clean:
-	$(RM) $(EXEC)/* *.o
+	$(RM) $(BIN)/* $(SRC)/*.o

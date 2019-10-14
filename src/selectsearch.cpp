@@ -1,5 +1,8 @@
-// This is a selective search algorithm by Tlotliso Mapana
-// Code has been adopted from www.LearnOpenCV.com
+// References used: Copyright (C) 2018-2019, BigVision LLC (LearnOpenCV.com), All Rights Reserved.
+// Mask R-CNN object detection algorithm
+// Developed further by:
+// Tlotliso Mapana
+// MPNTLO002
 
 #include <opencv2/ximgproc/segmentation.hpp>
 #include <opencv2/highgui.hpp>
@@ -13,25 +16,22 @@ using namespace cv;
 using namespace cv::ximgproc::segmentation;
 
 int main (int argc, char** argv){
-	cout << "Hello world!" << endl;
+	clock_t start = clock();
+	double duration;
 	
 	// read image
-	Mat image = cv::imread("../data/ship.jpg");
+	Mat image = cv::imread("data/ship.jpg");
 	// resize image
 	
-	int newHeight = 200;
-	
-	cout << "Hello world!" << endl;
+	int newHeight = 300;
 	
 	int newWidth = round((image.cols*newHeight)/image.rows);
-	
-	cout << "New Width: " << newWidth << endl;
-	
+		
 	cv::resize(image, image, Size(newWidth, newHeight));
-	//cv::resize(image, image, Size(image.cols, newHeight));
-
+	
 	// create selective search segmentation object
 	Ptr<SelectiveSearchSegmentation> ss = createSelectiveSearchSegmentation();
+	
 	// set input image on which to run segmentation and run
 	ss->setBaseImage(image);
 
@@ -41,14 +41,13 @@ int main (int argc, char** argv){
 	// run selective search algorithm
 	vector<Rect> rects;
 	ss->process(rects);
-	cout << "Possible number of regions: " << rects.size() << endl;
+	cout << "Possible number of regions: " << rects.size() << endl << endl;
 
-	int numShowRects = 100;
-	//int increment = 50;
+	//int numShowRects = 10;	// control number of boxes that can be drawn
+	int numShowRects = rects.size();
 
+	Mat imageOut = image.clone();
 	while(1){
-		Mat imageOut = image.clone();
-
 		for(int i=0; i<(int)rects.size(); i++){
 			if(i < numShowRects)
 				rectangle(imageOut, rects[i], Scalar(0, 255, 0));
@@ -56,12 +55,16 @@ int main (int argc, char** argv){
 				break;
 		}
 
-		cout << numShowRects << " iterations done." << endl;
-		// show output
-		imshow("Output", imageOut);
-
 		break;
 	}
+	
+	duration = (clock() - start) / (double) CLOCKS_PER_SEC;
+	cout << "Time to complete: " << duration << endl << endl;
+	
+	cout << numShowRects << " rectangles" << endl;
+	
+	// output result
+	imwrite("data/SSOut.jpg", imageOut);
 
 	return 0;
 }
